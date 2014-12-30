@@ -1,0 +1,41 @@
+$def with (actor, quot, country)   
+$var title: $actor["name"]
+
+<h3>$actor["name"]</h3>
+<div class="movie_content">
+	<div class="movie-about">
+		<div class="embed-responsive embed-responsive-16by9 ">
+		<iframe class="embed-responsive-item" width="640" height="390" src="$actor['video']" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="col-md-3">
+			<img src="$actor['img']" title="$actor['name']">
+		</div>
+		<div class="col-md-9">
+			<form>
+                <fieldset>
+                    <legend><h3>Information of Movie</h3></legend>
+					<table>
+						<tr>
+							<th>Birthdate</th>
+							<td>:</td>
+							<td>$actor['birthdate']</td>
+						</tr>
+						<tr>
+							<th>Country </th>
+							<td>:</td>
+							<td>$country</td>
+						</tr>
+					</table>
+				</fieldset>
+        	</form>
+		</div>
+
+	</div>
+	</div>
+	<div class="synopsis col-md-12">
+		<fieldset>
+            <legend><h3>Biography</h3></legend>
+            <p>$actor['biography']</p>
+		</fieldset>
+	</div>
+</div>

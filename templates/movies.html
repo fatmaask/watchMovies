@@ -1,0 +1,23 @@
+$def with(movies, title, pages)
+
+$var title : All Movies
+$var url = "/movies"
+
+<!-- Single button -->
+<div class="btn-group">
+  <a href="/add/movie"><button type="button" class="btn btn-danger " float="right">+ Add Movie</button></a>
+</div>
+<h3>All Movies</h3>
+    <div class="movie">
+    $for movie in movies: 
+       $ movie_name = movie["title"].replace(" ","_")
+        <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/movie/$movie_name/$movie['movie_id']"><span class="play"><span class="name">$movie["title"]</span></span><img src="$movie['img']"   title="$movie['title']"></a></div>
+    </div>
+   <div id="pagination" class="movie-theme simple-pagination col-md-12">
+   <ul class="pagination" >
+        $for page in range(pages):
+            $ next = page + 1
+            $if next == page: <li><a class="active" href="?page=$next">$next</a></li>
+            $else: <li><a href="?page=$next">$next</a></li>
+    </ul>
+    </div>

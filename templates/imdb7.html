@@ -1,0 +1,11 @@
+$def with(actors, title)
+
+$var title = title
+$var url = "/actors"
+
+<h3>Actors</h3>
+    <div class="movie">
+    $for movie in movies: 
+       $ movie_name = movie["title"].replace(" ","_")
+        <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/movie/$movie_name/$loop.index"><span class="play"><span class="name">$movie["title"]</span></span><img src="$movie['img']"   title="$movie['title']"></a></div>
+    </div>

@@ -1,0 +1,140 @@
+$def with (content)
+
+$ menu_items = [ ("/movies", "Movies"), ("/newMovies", "New Movies"),  ("/directors", "Directors"), ("/writers", "Writers"), ("/comingSoon", "Coming Soon"), ("/about", "About") ]
+
+<!DOCTYPE html PUBLIC >
+<html >
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="cs" />
+    <meta name="robots" content="all,follow" />
+    $if content.get("title") == None:
+       <title>Watch Movies</title>
+    $else:
+       <title>$content.get("title") | Watch Movies</title>
+    <link rel="index" href="./" title="Home" />
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/red-movie.ico">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/multiple-select.css" />
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/slider.js"></script> 
+    <script type="text/javascript" src="/static/js/jquery.jcarousel.js"></script> 
+    <script type="text/javascript" src="/static/js/jquery-func.js"></script>
+    <script type="text/javascript" src="/static/js/dropdown.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.multiple.select.js"></script>
+
+
+</head>
+<body>
+
+	<div class="menu">
+		<button type="button" class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse" >
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<button type="button" class="btn btn-collapse navbar-toggle pull-right" data-toggle="form-collapse" data-target="#search" aria-label="Right Align">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+        <a href="/" class="navbar-brand"><img src="/static/img/watchMovies.png"></a>
+		<form class="navbar-form form-collapse" action="/search"  id="search" method="get">
+            
+            <input type="text" class="form-control" name="search" placeholder="Search movies or actors...">
+	    </form>
+
+			
+	</div>
+	<div class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+			
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav"> 
+                $for (url, text) in menu_items:
+                  $if content.get("url") == url: <li id="active">
+                  $else: <li> 
+                    <a href="$url">$text</a>
+                </ul>
+				<div class="dropdown">
+  					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+    					Genres
+    					<span class="caret"></span>
+ 					</button>
+	  				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Adventure</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Anime</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Biography</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Comedy</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Documentary</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Drama</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Family</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Fantastic</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Historical</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Horror</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Military</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Musical</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Mystic</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Romantic</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sci-Fi</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sport</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Thriller</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">War</a></li>
+	    				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Western</a></li>
+ 					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="container">
+
+            <div id="content">
+	            <div class="col-md-9" >
+					$:content
+				</div>
+				<div class="col-md-3">
+					<h3>Coming Soon</h3>
+					<ul class="list-group">
+						<li class="list-group-item"><a href="/movie/Transcendence/1">Transcendence</a></li>
+						<li class="list-group-item"><a href="/movie/Black_Swan/2">Black Swan</a></li>
+						<li class="list-group-item"><a href="/movie/The_Best_of_Me/3">The Best of Me</a></li>
+						<li class="list-group-item"><a href="/movie/Encerrada/4">Encerrada</a></li>
+						<li class="list-group-item"><a href="/movie/Twilight_Saga_-_Breaking_Dawn_1/5">Twilight Saga</a></li>
+						<li class="list-group-item"><a href="/movie/Avatar/6">Avatar</a></li>
+						<li class="list-group-item"><a href="/movie/Cast_Away/7">Cast Away</a></li>
+					</ul>
+					<h3>Lists</h3>
+					<ul class="list-group">
+						<li class="list-group-item"><a href="#">Best Of Romantic</a></li>
+						<li class="list-group-item"><a href="#">Popular In Sci-Fi</a></li>
+						<li class="list-group-item"><a href="#">Bollywood</a></li>
+						<li class="list-group-item"><a href="#">South Korea</a></li>
+						<li class="list-group-item"><a href="#">Vampire Movies</a></li>
+						<li class="list-group-item"><a href="#">Cult Movies</a></li>
+						<li class="list-group-item"><a href="#">Movies About Maths</a></li>
+					</ul>
+					<h3>Look Forward to Movies</h3>
+					<ul class="list-group">
+						<li class="list-group-item"><a href="#">The Hobbit:The Battle of The Five Armies</a></li>
+						<li class="list-group-item"><a href="#">Hunger Games:Mockingjay</a></li>
+						<li class="list-group-item"><a href="#">Seni Seviyorum Adamım</a></li>
+						<li class="list-group-item"><a href="#">Sabit Kanca 2</a></li>
+						<li class="list-group-item"><a href="#">Fury</a></li>
+						<li class="list-group-item"><a href="#">Unutursam Fısılda</a></li>
+						<li class="list-group-item"><a href="#">Dumb and Dumber To</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="row-footer">
+        <div class="container">
+            <h5>© 2014 CENG3507 Project </h5>
+        </div>
+    </div>
+</body>
+</html>

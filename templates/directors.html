@@ -1,0 +1,28 @@
+$def with(directors, movies)
+
+$var title: Directors
+$var url = "/directors"
+
+
+
+<div class="btn-group">
+  <a href="/add/director"><button type="button" class="btn btn-danger " float="right">+ Add Director</button></a>
+</div>
+<div class="btn-group">
+  <a href="/add/actor"><button type="button" class="btn btn-danger " float="right">+ Add Actor</button></a>
+</div>
+<div class="btn-group">
+  <a href="/add/productor"><button type="button" class="btn btn-danger " float="right">+ Add Productor</button></a>
+</div>
+
+<h3>Directors</h3>
+<div class="movie director">
+	$for director in directors:
+	    $ director_name = director["name"].replace(" ","_")
+	     <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/director/$director_name/$loop.index"><span class="play"><span class="name">$director["name"]</span></span><img src="$director['img']"   title="$director['name']"></a></div>
+</div>
+
+
+
+
+

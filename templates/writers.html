@@ -1,0 +1,27 @@
+$def with(writers, movies)
+
+$var title : Writers
+$var url = "/writers"
+
+
+
+<div class="btn-group">
+  <a href="/add/writer"><button type="button" class="btn btn-danger " float="right">+ Add Writer</button></a>
+</div>
+
+<h2><span><a href="#">Select writer</a></span></h2>
+<p class="info noprint">
+ <form>
+ <select name="writer">
+ <option>Select one</option>
+ $for writer in writers:
+    <option>$writer.name</option>
+ </select> <input type="submit" value="GET MOVIES">                 
+ </form>
+ $if movies != []:
+  <div class="movie">
+    $for movie in movies: 
+       $ movie_name = movie["title"].replace(" ","_")
+        <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/movie/$movie_name/$movie['movie_id']"><span class="play"><span class="name">$movie["title"]</span></span><img src="$movie['img']"   title="$movie['title']"></a></div>
+    </div>
+</p>

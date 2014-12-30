@@ -1,0 +1,50 @@
+$def with (director, quot, country, director_movies)   
+$var title: $director["name"]
+
+<h3>$director["name"]</h3>
+<div class="movie_content">
+	<div class="movie-about">
+		<div class="embed-responsive embed-responsive-16by9 ">
+		<iframe class="embed-responsive-item" width="640" height="390" src="http://www.youtube.com/embed/$director['video']" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="col-md-3">
+			<img src="$director['img']" title="$director['name']">
+		</div>
+		<div class="col-md-9">
+			<form>
+                <fieldset>
+                    <legend><h3>Information of Director</h3></legend>
+					<table>
+						<tr>
+							<th>Birthdate</th>
+							<td>:</td>
+							<td>$director['birthdate']</td>
+						</tr>
+						<tr>
+							<th>Country </th>
+							<td>:</td>
+							<td>$country.country</td>
+						</tr>
+					</table>
+				</fieldset>
+        	</form>
+		</div>
+
+	</div>
+	</div>
+	<div class="synopsis col-md-12">
+		<fieldset>
+            <legend><h3>Biography</h3></legend>
+            <p>$director['biography']</p>
+		</fieldset>
+	</div>
+
+	<div>
+	<h3>$director['name']'s movies</h3>
+	<div class="movie">
+    $for movie in director_movies: 
+       $ movie_name = movie["title"].replace(" ","_")
+        <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/movie/$movie_name/$movie['movie_id']"><span class="play"><span class="name">$movie["title"]</span></span><img src="$movie['img']"   title="$movie['title']"></a></div>
+    </div>
+    </div> 
+</div>

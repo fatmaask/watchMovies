@@ -1,0 +1,76 @@
+$def with (movie, quot, genre,director, actor, writer, productor, country)   
+$var title: $movie["title"]
+
+
+
+<h3>$movie["title"]</h3>
+<div class="movie_content">
+	<div class="movie-about">
+		<div class="embed-responsive embed-responsive-16by9 ">
+		<iframe class="embed-responsive-item" width="640" height="390" src="http://www.youtube.com/embed/$movie['video']" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="col-md-3">
+			<img src="$movie['img']" title="$movie['title']">
+		</div>
+		<div class="col-md-9">
+			<form>
+                <fieldset>
+                    <legend><h3>Information of Movie</h3></legend>
+					<table>
+						<tr>
+							<th>Release Date</th>
+							<td>:</td>
+							<td>$movie['release_date']</td>
+						</tr>
+						<tr>
+							<th>Production </th>
+							<td>:</td>
+							<td> $movie['year'] - $country</td>
+						</tr>
+						<tr>
+							<th>Genre</th>
+							<td>:</td>
+							<td>$genre</td>
+						</tr>
+						<tr>
+							<th>Runtime</th>
+							<td>:</td>
+							<td>$movie['runtime'] min</td>
+						</tr>
+						<tr>
+							<th>Director</th>
+							<td>:</td>
+							 $ director_name = director["name"].replace(" ","_")
+							<td><a href="/director/$director_name/$director['director_id']">$director['name']</a></td>
+						</tr>
+						<tr>
+							<th>Actors </th>
+							<td>:</td>
+							<td>$actor</td>
+						</tr>
+						<tr>
+							<th>Writers </th>
+							<td>:</td>
+							<td>$writer</td>
+						</tr>
+						<tr>
+							<th>Productor</th>
+							<td>:</td>
+							<td>$productor</td>
+						</tr>
+					</table>
+				</fieldset>
+        	</form>
+		</div>
+
+	</div>
+	</div>
+	<div class="synopsis col-md-12">
+		<fieldset>
+            <legend><h3>Synopsis</h3></legend>
+            <p>$movie['synopsis']</p>
+		</fieldset>
+	</div>
+
+
+</div>
