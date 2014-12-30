@@ -15,6 +15,7 @@ urls = (
     '/add/director', 'add_director',
     '/add/actor', 'add_actor',
     '/add/writer', 'add_writer',
+    '/add/country', 'add_country',
     '/add/productor', 'add_productor',
     '/movies', 'movies',
     '/directors', 'directors',
@@ -228,6 +229,7 @@ class add_movie:
       web.form.Dropdown('productor', productors, description="Productors"),
       web.form.Textarea('synopsis', rows="5", cols="20", description="Synopsis"),
       web.form.Textbox('video',web.form.Validator('Please youtube video link', check_video), description="Video Link"),
+##      web.form.File('img', description="Image"),
       validators=[web.form.Validator('The movie exists', check_director_movies)]
       
       )
@@ -246,8 +248,6 @@ class add_movie:
        if genres == [] and validate:
            form_html += u"<br><strong class='wrong'>Select anything</strong>"       
        form_html += u'</td></tr>'
-##       form_html += u'<tr><th><label for="genre">Image</label></th><td>'
-##       form_html += u'<input type="file" name="myfile" /></td></tr>'
        form_html += u'</table>'
        return form_html
         
@@ -269,6 +269,15 @@ class add_movie:
         else:   
             form.title.value=clean_str(form.d.title)
             form.video.value=clean_video(form.d.video)
+##            x = web.input(img={})
+##            filedir = "static/img"
+##            if x.img.filename != "":
+##               filepath=x.img.filename.replace('\\','/')
+##               filename=filepath.split('/')[-1]
+##               fout = open(filedir +'/'+ filename,'wb')
+##               fout.write(x.img.file.read())
+##               fout.close()
+##               form.value.img = "/static/img/"+filename 
             new_movie_id = db.insert('movies', title=form.d.title, synopsis=form.d.synopsis,
                                      director_id=form.d.director_id, release_date=form.d.release_date,
                                      runtime=form.d.runtime, year=form.d.year, video=form.d.video)
@@ -299,16 +308,10 @@ class add_movie:
             productor = pro.get("productor")
             for productor_id in productor:
                db.insert('movie_productor', movie_id=new_movie_id, productor_id=productor_id)
-##
-##              
-##            x = web.input(myfile={})
-##            filedir = 'static/img' 
-##            if 'myfile' in x:
-##               filepath=x.myfile.filename.replace('\\','/') 
-##               filename=filepath.split('/')[-1] 
-##               fout = open(filedir +'/'+ filename,'w') 
-##               fout.write(x.myfile.file.read()) 
-##               fout.close()           
+
+              
+          
+            
             raise web.seeother('/movie/%s/%d' % (form.d.title.replace(" ", "_"), new_movie_id))
         
 
@@ -352,7 +355,7 @@ class directors:
         return render.directors(directors, director_movies)
 
 class add_director:
-    country_rows = list(db.select("countries"))
+    country_rows = list(db.select("countries", order="country"))
     country = [ (row.country_id, row.country) for row in country_rows]
 
     def check_director(director):
@@ -369,7 +372,7 @@ class add_director:
           web.form.Dropdown('country_id', country, description="Country"),
           web.form.Textarea('biography', web.form.Validator('Enter biography',required), description="Biography"),
           web.form.Textbox('video',web.form.Validator('Please youtube video link', check_video),description="Video"),
-#          web.form.File('img', description="Image"),
+          web.form.File('img', description="Image"),
           validators=[web.form.Validator('The director exists!',check_director)],
         
     )
@@ -388,16 +391,18 @@ class add_director:
             form.video.value=clean_video(form.d.video)
             form.name.value=clean_str(form.name.value)
             
-#            x = web.input(img={})
-#            filedir = "static/img"
-#            if x.img.filename != "":
-#               filepath=x.img.filename.replace('\\','/')
-#               filename=filepath.split('/')[-1]
-#               fout = open(filedir +'/'+ filename,'wb')
-#               fout.write(x.img.file.read())
-#               fout.close()
-#               form.value.img = "/static/img/"+filename 
-            new_director=db.insert('director', **form.d)
+            x = web.input(img={})
+            filedir = "static/img"
+            if x.img.filename != "":
+               filepath=x.img.filename.replace('\\','/')
+               filename=filepath.split('/')[-1]
+               fout = open(filedir +'/'+ filename,'wb')
+               fout.write(x.img.file.read())
+               fout.close()
+               form.value.img = "/static/img/"+filename 
+            new_director=db.insert('director', name=form.d.name, birthdate=form.d.birthdate,
+                                   country_id=form.d.country_id, biography=form.d.biography,
+                                   video=form.d.video,img=form.value.img)
             raise web.seeother('/director/%s/%d'% (form.d.name.replace(" ","_"), new_director))    
 
 
@@ -521,8 +526,37 @@ class add_productor:
             db.insert('productors', name=new_productor)                        
         return render.add_productor(self.login.render())
 
-    
+"""COUNTRY"""    
+class add_country:
 
+    def check_country(name):
+       country= db.select("countries")
+       country = [ c.country for c in country]
+       name = clean_str(name)
+       return not name in country
+
+    login = web.form.Form( 
+          web.form.Textbox('name',  
+             web.form.Validator('Enter a country', required),
+             web.form.Validator('Country exists!', check_country),
+             size=15,
+             description="Country"),           
+    )
+    
+           
+    def GET(self):   
+        return render.add_country(self.login.render())
+
+    def POST(self):         
+        form = self.login() 
+        if not form.validates():
+            form.name.value = clean_str(form.name.value)
+            return render.add_country(form.render())
+        else:    
+            new_country = web.input().get("name")
+            new_country =clean_str(form.name.value)
+            db.insert('countries', country=new_country)                        
+        return render.add_country(self.login.render())
 
 """COMING SOON"""
     
