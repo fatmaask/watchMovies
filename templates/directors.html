@@ -22,7 +22,7 @@ $var url = "/directors"
 <div class="movie director">
 	$for director in directors:
 	    $ director_name = director["name"].replace(" ","_")
-	     <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/director/$director_name/$loop.index"><span class="play"><span class="name">$director["name"]</span></span><img src="$director['img']"   title="$director['name']"></a></div>
+	     <div class="movie-image col-lg-4 col-md-4 col-sm-6 col-xs-6"><a href="/director/$director_name/$director['director_id']"><span class="play"><span class="name">$director["name"]</span></span><img src="$director['img']"   title="$director['name']"></a></div>
 </div>
 
 

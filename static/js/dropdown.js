@@ -40,3 +40,11 @@ $(function() {
             width: '100%'
         });
     });
+
+$(function() {
+        $('#genre').change(function() {
+            console.log($(this).val());
+        }).multipleSelect({
+            width: '100%'
+        });
+    });

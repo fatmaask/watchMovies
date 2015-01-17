@@ -28,7 +28,7 @@ urls = (
 
 
 render = web.template.render('templates/', base='base')
-db = web.database(dbn='mysql', user='root', pw='', db='movies')
+db = web.database(dbn='mysql', user='root', pw='', db='watchmovies')
 
 
 menu_items = [ ("/movies", "Movies"), ("/newMovies", "New Movies"),  \
@@ -55,13 +55,6 @@ def is_int(number):
     except ValueError:
         return False
 
-    
-def is_float(input_str):
-    try:
-        result = float(input_str)
-        return True
-    except ValueError:
-        return False
 
 def date_time(date_text):
     try:
@@ -227,60 +220,41 @@ class add_movie:
       web.form.Dropdown('actor', actors, description="Actors"),
       web.form.Dropdown('writer', writers, description="Writers"),
       web.form.Dropdown('productor', productors, description="Productors"),
-      web.form.Textarea('synopsis', rows="5", cols="20", description="Synopsis"),
+      web.form.Textarea('synopsis', rows="6", cols="50", description="Synopsis"),
       web.form.Textbox('video',web.form.Validator('Please youtube video link', check_video), description="Video Link"),
-##      web.form.File('img', description="Image"),
+      web.form.Dropdown('genre', genres, description="Genre"),
+      web.form.File('img', description="Image"),
       validators=[web.form.Validator('The movie exists', check_director_movies)]
       
       )
     
-    def form_manual(self, form, validate):
-       inp = web.input(genre=[])
-       genres = inp.get("genre")
-       form_html = form.render()
-       form_html = form_html[0:-8]
-       form_html += u'<tr><th><label for="genre">Genre</label></th><td>'
-       for (genre_id,name) in self.genres:
-          if str(genre_id) in genres:
-             form_html += u'<input type="checkbox" value=%d name="genre" checked=true>%s' % (genre_id,name)  
-          else:
-             form_html += u'<input type="checkbox" value=%d name="genre">%s' % (genre_id,name)  
-       if genres == [] and validate:
-           form_html += u"<br><strong class='wrong'>Select anything</strong>"       
-       form_html += u'</td></tr>'
-       form_html += u'</table>'
-       return form_html
+
         
     def GET(self):
        form = self.movie_add_form()
-       form_html = self.form_manual(form, validate=False)       
-       return render.add_movie(form_html)  
+       return render.add_movie(form.render())  
 
-    def POST(self): 
-                                         
+    def POST(self):                                  
         form = self.movie_add_form()
-        inp = web.input(genre=[])
-        genre = inp.get("genre")
         if not form.validates():
-            form.title.value=clean_str(form.d.title)
+            form.title.value=clean_str(form.title.value)       
+            return render.add_movie(form.render())            
+        else:
             form.video.value=clean_video(form.d.video)
-            form_html = self.form_manual(form, validate=True)        
-            return render.add_movie(form_html)            
-        else:   
-            form.title.value=clean_str(form.d.title)
-            form.video.value=clean_video(form.d.video)
-##            x = web.input(img={})
-##            filedir = "static/img"
-##            if x.img.filename != "":
-##               filepath=x.img.filename.replace('\\','/')
-##               filename=filepath.split('/')[-1]
-##               fout = open(filedir +'/'+ filename,'wb')
-##               fout.write(x.img.file.read())
-##               fout.close()
-##               form.value.img = "/static/img/"+filename 
+            form.title.value=clean_str(form.title.value)
+            
+            x = web.input(img={})
+            filedir = "static/img"
+            if x.img.filename != "":
+               filepath=x.img.filename.replace('\\','/')
+               filename=filepath.split('/')[-1]
+               fout = open(filedir +'/'+ filename,'wb')
+               fout.write(x.img.file.read())
+               fout.close()
+               form.value.img = "/static/img/"+filename
             new_movie_id = db.insert('movies', title=form.d.title, synopsis=form.d.synopsis,
                                      director_id=form.d.director_id, release_date=form.d.release_date,
-                                     runtime=form.d.runtime, year=form.d.year, video=form.d.video)
+                                     runtime=form.d.runtime, year=form.d.year, video=form.d.video, img=form.value.img)
            
             inp = web.input(genre=[])
             genre = inp.get("genre")
@@ -370,7 +344,7 @@ class add_director:
           web.form.Textbox('birthdate', web.form.Validator('Enter birthdate',required),
                            web.form.Validator('Incorrect data format, should be YYYY-MM-DD',date_time), description="Birthdate"),
           web.form.Dropdown('country_id', country, description="Country"),
-          web.form.Textarea('biography', web.form.Validator('Enter biography',required), description="Biography"),
+          web.form.Textarea('biography', web.form.Validator('Enter biography',required),rows="6", cols="50", description="Biography"),
           web.form.Textbox('video',web.form.Validator('Please youtube video link', check_video),description="Video"),
           web.form.File('img', description="Image"),
           validators=[web.form.Validator('The director exists!',check_director)],
